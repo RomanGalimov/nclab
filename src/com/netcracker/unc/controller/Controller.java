@@ -22,19 +22,12 @@ public final class Controller {
     }
 
     public void saveAllInByteFile() throws Exception {
-        if (Model.getModel().getStudents() == null) {
-            throw new Exception("нечего сохранять");
-        } else {
-            Model.getModel().saveAllInByteFile();
-        }
+
+        Model.getModel().saveAllInByteFile();
     }
 
     public void saveAllStudentsInTXTFile() throws Exception {
-        if (Model.getModel().getStudents() == null) {
-            throw new Exception("нечего сохранять");
-        } else {
-            Model.getModel().saveAllStudentsInTXTFile();
-        }
+        Model.getModel().saveAllStudentsInTXTFile();
     }
 
     public String getStudentsFromTXTFile() throws IOException {
@@ -44,10 +37,17 @@ public final class Controller {
         return Model.getModel().readStudentsFromTXTFile();
     }
 
-    public ArrayList getStudentsFromByteFile() throws Exception {
-        if (!new File("students").exists())
+    public void takeModelFromByteFile() throws Exception {
+        if (!new File("model").exists())
             throw new FileNotFoundException("File not found");
-        return Model.getModel().getStudentsFromByteFile();
+        Model.getModel().takeModelFromByteFile();
+    }
+
+    public String getAllStudents(){
+        if(Model.getModel().getStudents()==null){
+            throw new NullPointerException();
+        }
+        return Model.getModel().getAllStudents();
     }
 
     public Student getStudentByName(String name) {
@@ -56,7 +56,7 @@ public final class Controller {
 
     public String getInfoAboutStudentByName(String name) {
         if (Model.getModel().getStudentByName(name) == null) {
-            throw new NullPointerException("Student not found");
+            throw new IllegalArgumentException("Такого студента нет");
         }
         return Model.getModel().seeInfoAboutStudentByName(name);
     }
@@ -64,10 +64,15 @@ public final class Controller {
     public void createStudent(String name, int numberOfGroup, String faculty, String dateOfEnrollment) throws Exception {
         Group group = new Group(numberOfGroup, faculty);
         Student newStudent = new Student(name, group, dateOfEnrollment);
+        if(Model.getModel().getGroups()==null)
+            throw new IllegalArgumentException("Такой группы нет в системе");
+        boolean is = false;
         for (Group thisGroup : Model.getModel().getGroups()) {
-            if (!thisGroup.equals(group))
-                throw new Exception("Такой группы нет в системе");
+            if (thisGroup.equals(group))
+                is = true;
         }
+        if (!is)
+            throw new IllegalArgumentException("Такой группы нет в системе");
         for (Student thisStud : Model.getModel().getStudents()) {
             if (thisStud.equals(newStudent))
                 throw new IllegalArgumentException("Такой студент уже есть в системе");
@@ -77,10 +82,13 @@ public final class Controller {
 
     public void createGroup(int numberOfGroup, String faculty) {
         Group newGroup = new Group(numberOfGroup, faculty);
+        boolean is = false;
         for (Group thisGroup : Model.getModel().getGroups()) {
             if (thisGroup.equals(newGroup))
-                throw new IllegalArgumentException("Такая группа уже есть в системе");
+                is = true;
         }
+        if (is == true)
+            throw new IllegalArgumentException("Такая группа уже есть");
         Model.getModel().createGroup(newGroup);
     }
 
@@ -94,6 +102,8 @@ public final class Controller {
     public void deleteGroup(int numberOfGroup, String faculty) {
         Group group = new Group(numberOfGroup, faculty);
         boolean is = false;
+        if(Model.getModel().getGroups()==null)
+            throw new IllegalArgumentException("Такой группы нет в системе");
         for (Group thisGroup : Model.getModel().getGroups()) {
             if (thisGroup.equals(group))
                 is = true;
@@ -105,14 +115,25 @@ public final class Controller {
 
     public void modifyStudentByName(String oldName, String newName, String dateOfEnrollment, int numberOfGroup, String faculty) {
         if (Model.getModel().getStudentByName(oldName) == null) {
-            throw new IllegalArgumentException("Такого студента нет в системе");
+            throw new IllegalArgumentException ("Такого студента нет в системе");
         }
-        Group group = new Group(numberOfGroup, faculty);
+        Group group = new Group(numberOfGroup,faculty);
+        boolean is = false;
+        if(Model.getModel().getGroups()==null)
+            throw new IllegalArgumentException("Такой группы нет в системе");
+        for (Group thisGroup : Model.getModel().getGroups()) {
+            if (thisGroup.equals(group))
+                is = true;
+        }
+        if (is == false)
+            throw new IllegalArgumentException("Такой группы нет в системе");
         Model.getModel().modifyStudentByName(oldName, newName, group, dateOfEnrollment);
     }
 
     public void modifyGroup(int oldNumberOfGroup, String oldFaculty, int newNumberOfGroup, String newFaculty) {
-        Group group = new Group(oldNumberOfGroup, oldFaculty);
+        Group group=new Group(oldNumberOfGroup,oldFaculty);
+        if(Model.getModel().getGroups()==null)
+            throw new IllegalArgumentException("Такой группы нет в системе");
         boolean is = false;
         for (Group thisGroup : Model.getModel().getGroups()) {
             if (thisGroup.equals(group))
@@ -120,10 +141,13 @@ public final class Controller {
         }
         if (is == false)
             throw new IllegalArgumentException("Такой группы нет в системе");
-        Model.getModel().modifyGroup(group, newNumberOfGroup, newFaculty);
+        Model.getModel().modifyGroup(group,newNumberOfGroup,newFaculty);
     }
 
-    public String getStudentsOfGroup(Group group) {
+    public String getStudentsOfGroup(int numberOfGroup,String faculty) {
+        Group group=new Group(numberOfGroup,faculty);
+        if(Model.getModel().getGroups()==null)
+            throw new IllegalArgumentException("Такой группы нет в системе");
         boolean is = false;
         for (Group thisGroup : Model.getModel().getGroups()) {
             if (thisGroup.equals(group))

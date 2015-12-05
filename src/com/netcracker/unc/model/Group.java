@@ -2,16 +2,14 @@ package com.netcracker.unc.model;
 
 import java.io.Serializable;
 
-public class Group implements Serializable {
-
+public class Group implements Serializable{
     private int numberOfGroup;
     private String faculty;
 
-    public Group(int number, String faculty) {
-        this.numberOfGroup = number;
-        this.faculty = faculty;
+    public Group(int number, String faculty){
+        this.numberOfGroup=number;
+        this.faculty=faculty;
     }
-
 
     public int getNumberOfGroup() {
         return numberOfGroup;
@@ -29,12 +27,12 @@ public class Group implements Serializable {
         this.faculty = faculty;
     }
 
-    public boolean equals(Object object) {
-        if (object == null) return false;
-        if (this == object) return true;
-        if (this.getClass() == object.getClass()) {
-            Group obj = (Group) object;
-            if ((this.getNumberOfGroup() == obj.getNumberOfGroup()) && (this.getFaculty().compareToIgnoreCase(obj.getFaculty()) == 0))
+    public boolean equals(Object object){
+        if(object==null) return false;
+        if(this==object) return true;
+        if(this.getClass()== object.getClass()){
+            Group obj=(Group)object;
+            if((this.getNumberOfGroup()==obj.getNumberOfGroup())&&(this.getFaculty().equalsIgnoreCase(obj.getFaculty())))
                 return true;
         }
         return false;

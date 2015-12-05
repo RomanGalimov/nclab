@@ -3,11 +3,11 @@ package com.netcracker.unc.model;
 import java.io.*;
 import java.util.ArrayList;
 
-public final class Model {
+public final class Model implements Serializable {
     private static Model model = null;
     private ArrayList<Student> students = new ArrayList<Student>();
     private ArrayList<Group> groups = new ArrayList<Group>();
-    private Group defaultGroup = new Group(0, "Отчисленные");
+    private Group defaultGroup = new Group(0, "отчисленные");
 
     private Model() {
     }
@@ -43,9 +43,9 @@ public final class Model {
     }
 
     public void saveAllInByteFile() throws IOException {
-        FileOutputStream fos = new FileOutputStream("students");
+        FileOutputStream fos = new FileOutputStream("model");
         ObjectOutputStream out = new ObjectOutputStream(fos);
-        out.writeObject(students);
+        out.writeObject(this);
         out.flush();
         out.close();
     }
@@ -74,20 +74,28 @@ public final class Model {
         return strBuild.toString();
     }
 
-    public ArrayList getStudentsFromByteFile() throws ClassNotFoundException, IOException {
-        ArrayList<Student> arrayOfStudents = null;
-        {
-            FileInputStream fis = new FileInputStream("studentArrayList.txt");
-            ObjectInputStream in = new ObjectInputStream(fis);
-            arrayOfStudents = (ArrayList<Student>) in.readObject();
-            in.close();
+    public String getAllStudents(){
+        StringBuilder strBuild = new StringBuilder();
+        for (int i = 0; i < students.size(); i++) {
+            strBuild.append(students.get(i).toString()+"\n");
         }
-        return arrayOfStudents;
+        return strBuild.toString();
+    }
+
+    public void takeModelFromByteFile() throws ClassNotFoundException, IOException {
+        FileInputStream fis = new FileInputStream("model");
+        ObjectInputStream in = new ObjectInputStream(fis);
+        Model model = (Model) in.readObject();
+        in.close();
+        this.students=model.students;
+        this.defaultGroup=model.defaultGroup;
+        this.groups=model.groups;
+
     }
 
     public Student getStudentByName(String name) {
         Student thisStudent = null;
-        for (Student stud : students) {
+        for (Student stud : getStudents()) {
             if (stud.getNameOfStudent().compareToIgnoreCase(name) == 0) {
                 thisStudent = stud;
                 return thisStudent;
@@ -101,10 +109,15 @@ public final class Model {
     }
 
     public void createStudent(Student student) {
+        if (students == null)
+            setStudents(new ArrayList<Student>());
         students.add(student);
+
     }
 
     public void createGroup(Group group) {
+        if (groups == null)
+            setGroups(new ArrayList<Group>());
         groups.add(group);
     }
 
@@ -133,12 +146,19 @@ public final class Model {
     }
 
     public void modifyGroup(Group group, int newNumberOfGroup, String newFaculty) {
+        for (Student thisStudent : students) {
+            if (thisStudent.getGroup().equals(group)) {
+                thisStudent.getGroup().setNumberOfGroup(newNumberOfGroup);
+                thisStudent.getGroup().setFaculty(newFaculty);
+            }
+        }
         for (Group thisGroup : groups) {
             if (thisGroup.equals(group)) {
                 thisGroup.setNumberOfGroup(newNumberOfGroup);
                 thisGroup.setFaculty(newFaculty);
             }
         }
+
     }
 
     public String seeStudentsOfThisGroup(Group group) {
