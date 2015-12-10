@@ -1,7 +1,7 @@
 package com.netcracker.unc.view;
 
 import com.netcracker.unc.controller.Controller;
-
+import java.io.*;
 import java.util.Scanner;
 
 public final class View {
@@ -209,12 +209,19 @@ public final class View {
     }
 
     public static void main(String[] args) throws Exception {
-        Controller.getControl().takeModelFromByteFile();
+        try{
+            Controller.getControl().takeModelFromByteFile();
+        } catch (FileNotFoundException fnfe){
+            System.err.println(fnfe.getMessage());
+        }
         View view = new View();
         view.menuMain();
-
-        Controller.getControl().saveAllInByteFile();
-         }
+        try{
+            Controller.getControl().saveAllInByteFile();
+        } catch (FileNotFoundException fnfe){
+            System.err.println(fnfe.getMessage());
+        }
+    }
 }
 
 
