@@ -1,7 +1,6 @@
 package com.netcracker.unc.view;
 
 import com.netcracker.unc.controller.Controller;
-import java.io.*;
 import java.util.Scanner;
 
 public final class View {
@@ -208,6 +207,7 @@ public final class View {
         }
     }
 
+    /*
     public static void main(String[] args) throws Exception {
         try{
             Controller.getControl().takeModelFromByteFile();
@@ -222,6 +222,7 @@ public final class View {
             System.err.println(fnfe.getMessage());
         }
     }
+    */
 }
 
 

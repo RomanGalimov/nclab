@@ -157,4 +157,20 @@ public final class Controller {
             throw new IllegalArgumentException("Такой группы нет в системе");
         return Model.getModel().seeStudentsOfThisGroup(group);
     }
+
+    /*~~~*/
+
+    public ArrayList<Student> getStudents(){
+        if(Model.getModel().getStudents()==null){
+            throw new NullPointerException();
+        }
+        return Model.getModel().getStudents();
+    }
+
+    public ArrayList<Group> getGroups(){
+        if(Model.getModel().getGroups()==null){
+            throw new NullPointerException();
+        }
+        return Model.getModel().getGroups();
+    }
 }
