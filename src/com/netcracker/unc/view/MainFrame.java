@@ -11,8 +11,13 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
+import java.io.FileNotFoundException;
+//import java.util.List;
 import javax.swing.*;
+
+import java.util.ArrayList;
+import com.netcracker.unc.model.Student;
+import com.netcracker.unc.model.Group;
 
 public class MainFrame extends JFrame implements ActionListener {
 
@@ -71,12 +76,6 @@ public class MainFrame extends JFrame implements ActionListener {
         // При закрытии формы заканчиваем работу приложения
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //загружаем данные
-        /*try{
-            Controller.getControl().takeModelFromByteFile();
-        } catch (FileNotFoundException fnfe){
-            System.err.println(fnfe.getMessage());
-        }*/
     }
 
     // Метод создает кнопку с заданными харктеристиками - заголовок и действие
@@ -100,9 +99,9 @@ public class MainFrame extends JFrame implements ActionListener {
         String action = ae.getActionCommand();
         // В зависимости от команды выполняем действия
         switch (action) {
-            // Перегрузка данных
+            // Загрузка данных
             case LOAD:
-
+                loadStudents();
                 break;
             // Добавление записи
             case ADD:
@@ -121,11 +120,57 @@ public class MainFrame extends JFrame implements ActionListener {
 
     //Дальше описание кнопок
 
+    //Загрузить список студентов
+    private void loadStudents()/* throws Exception */{
+       // try {
+            ArrayList<Student> students = Controller.getControl().getStudents();
+            StudentsTable st = new StudentsTable(students);
+            studentsTable.setModel(st);
+       /* }catch (NullPointerException npe){
+            System.err.println(npe.getMessage());
+        }*/
+    }
+
+    //Загрузить список групп
+    private void loadGroups() throws Exception{
+        try{
+            ArrayList<Group> groups = Controller.getControl().getGroups();
+            GroupsTable gt = new GroupsTable(groups);
+            groupsTable.setModel(gt);
+        }catch (NullPointerException npe){
+            System.err.println(npe.getMessage());
+        }
+    }
+
+    //Добавить студента
+
+    //Добавить группу
+
+    //Редактировать студента
+
+    //Редактировать группу
+
+    //Удалить студента
+
+    //Удалить группу
 
 
-    public static void main(String[] args) {
+
+
+    public static void main(String[] args) throws Exception{
+        //загружаем данные
+        try{
+            Controller.getControl().takeModelFromByteFile();
+        } catch (FileNotFoundException fnfe){
+            System.err.println(fnfe.getMessage());
+        }
         MainFrame cf = new MainFrame();
         cf.setVisible(true);
+        try{
+            Controller.getControl().saveAllInByteFile();
+        } catch (FileNotFoundException fnfe){
+            System.err.println(fnfe.getMessage());
+        }
     }
 }
 
