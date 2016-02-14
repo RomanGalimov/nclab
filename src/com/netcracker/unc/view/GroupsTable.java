@@ -5,6 +5,7 @@ package com.netcracker.unc.view;
  */
 
 import java.util.ArrayList;
+import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import com.netcracker.unc.controller.Controller;
 import com.netcracker.unc.model.Group;
@@ -41,6 +42,33 @@ public class GroupsTable extends AbstractTableModel{
                 return group.getFaculty();
             default:
                 return group.getNumberOfGroup();
+        }
+    }
+
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return true;
+    }
+
+    public void setValueAt(Object aValue, int row, int col) {
+        Group group = groups.get(row);
+        switch (col){
+            case 0:
+                try {
+                    String faculty = new String((aValue.toString()));
+                    Controller.getControl().modifyGroup(group.getNumberOfGroup(),group.getFaculty(),group.getNumberOfGroup(),faculty);
+
+                } catch (IllegalArgumentException iae){
+                    JOptionPane.showMessageDialog(null, iae.getMessage(), "Inane error", JOptionPane.ERROR_MESSAGE);
+                }
+            default:
+                try {
+                    int number = new Integer(aValue.toString()).intValue();
+                    Controller.getControl().modifyGroup(group.getNumberOfGroup(),group.getFaculty(),number,group.getFaculty());
+
+                } catch (IllegalArgumentException iae){
+                    JOptionPane.showMessageDialog(null, iae.getMessage(), "Inane error", JOptionPane.ERROR_MESSAGE);
+                }
+
         }
     }
 }
