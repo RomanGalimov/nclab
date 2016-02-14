@@ -25,7 +25,7 @@ public class MainFrame extends JFrame implements ActionListener {
     private static final String LOAD = "LOAD";
     private static final String ADD = "ADD";
     private static final String DELETE = "DELETE";
-    private static final String SET = "SET";
+   // private static final String SET = "SET";
 
 
     private final JTable studentsTable = new JTable();
@@ -46,7 +46,7 @@ public class MainFrame extends JFrame implements ActionListener {
         btnPanel.setLayout(gb);
         btnPanel.add(createButton(gb, gbc, "Сохранить", LOAD));
         btnPanel.add(createButton(gb, gbc, "Добавить", ADD));
-        btnPanel.add(createButton(gb, gbc, "Исправить", SET));
+        //btnPanel.add(createButton(gb, gbc, "Исправить", SET));
         btnPanel.add(createButton(gb, gbc, "Удалить", DELETE));
 
         JPanel left = new JPanel();
@@ -82,12 +82,6 @@ public class MainFrame extends JFrame implements ActionListener {
         switch (action) {
             case LOAD:
                 try {
-                    if (tabbedPane.getSelectedIndex() == 0) loadStudents();
-                    else loadGroups();
-                } catch (NullPointerException npe) {
-                    JOptionPane.showMessageDialog(null, npe.getMessage(), "Inane error", JOptionPane.ERROR_MESSAGE);
-                }
-                try {
                     saveAll();
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Inane error", JOptionPane.ERROR_MESSAGE);
@@ -104,9 +98,9 @@ public class MainFrame extends JFrame implements ActionListener {
                 }
 
                 break;
-            case SET:
+            //case SET:
 
-                break;
+               // break;
             case DELETE:
                 try {
                     if (tabbedPane.getSelectedIndex() == 0) deleteStudent();
@@ -117,7 +111,6 @@ public class MainFrame extends JFrame implements ActionListener {
                 }
         }}
 
-    //Дальше описание кнопок
 
     private void loadStudents(){
 
@@ -149,13 +142,6 @@ public class MainFrame extends JFrame implements ActionListener {
         }
         loadGroups();
     }
-
-    private void setStudent(){
-
-    }
-
-    //Редактировать группу
-
 
     private void deleteStudent(){
         int sr = studentsTable.getSelectedRow();

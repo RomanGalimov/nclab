@@ -3,6 +3,7 @@ package com.netcracker.unc.view;
 
 import java.util.ArrayList;
 import java.util.EventListener;
+import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
@@ -62,25 +63,43 @@ public class StudentsTable extends AbstractTableModel /*implements TableModelLis
 
 
 
-  /*  public void tableChanged(TableModelEvent e){
-        int row = e.getFirstRow();
-        int col = e.getColumn();
-
-    }*/
-    /*@Override
+    @Override
     public void setValueAt(Object aValue, int row, int col) {
-        //super.setValueAt(aValue, rowIndex, columnIndex);
         Student student = students.get(row);
         switch(col){
             case 0:
-                *//*return*//* student.getGroup().setFaculty(aValue);
+                try {
+                    String faculty = new String((aValue.toString()));
+                    Controller.getControl().modifyStudentByName(student.getNameOfStudent(),student.getNameOfStudent(),student.getDateOfEnrollment(),student.getGroup().getNumberOfGroup() ,faculty );
+
+                } catch (IllegalArgumentException iae){
+                    JOptionPane.showMessageDialog(null, iae.getMessage(), "Inane error", JOptionPane.ERROR_MESSAGE);
+                }
             case 1:
-                return student.getGroup().getNumberOfGroup();
+                try {
+                    int number = new Integer(aValue.toString()).intValue();
+                    Controller.getControl().modifyStudentByName(student.getNameOfStudent(),student.getNameOfStudent(),student.getDateOfEnrollment(),number  ,student.getGroup().getFaculty() );
+
+                } catch (IllegalArgumentException iae){
+                    JOptionPane.showMessageDialog(null, iae.getMessage(), "Inane error", JOptionPane.ERROR_MESSAGE);
+                }
             case 2:
-                return student.getNameOfStudent();
+                try {
+                    String name = new String((aValue.toString()));
+                    Controller.getControl().modifyStudentByName(student.getNameOfStudent(),name,student.getDateOfEnrollment(),student.getGroup().getNumberOfGroup(),student.getGroup().getFaculty() );
+
+                } catch (IllegalArgumentException iae){
+                    JOptionPane.showMessageDialog(null, iae.getMessage(), "Inane error", JOptionPane.ERROR_MESSAGE);
+                }
             default:
-                return student.getDateOfEnrollment();
+                try {
+                    String date = new String((aValue.toString()));
+                    Controller.getControl().modifyStudentByName(student.getNameOfStudent(),student.getNameOfStudent(),date,student.getGroup().getNumberOfGroup(),student.getGroup().getFaculty() );
+
+                } catch (IllegalArgumentException iae){
+                    JOptionPane.showMessageDialog(null, iae.getMessage(), "Inane error", JOptionPane.ERROR_MESSAGE);
+                }
         }
 
-    }*/
+    }
 }
