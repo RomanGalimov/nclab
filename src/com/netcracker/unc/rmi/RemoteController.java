@@ -1,7 +1,10 @@
 package com.netcracker.unc.rmi;
 
+import com.netcracker.unc.model.Student;
+
 import java.rmi.*;
 import java.util.ArrayList;
+
 
 
 public interface RemoteController extends Remote {

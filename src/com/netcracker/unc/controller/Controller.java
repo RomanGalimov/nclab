@@ -16,7 +16,7 @@ public final class Controller implements RemoteController {
     private Controller() {
     }
 
-    public synchronized static synchronized Controller getControl() {
+    public synchronized static Controller getControl() {
         if (control == null)
             control = new Controller();
         return control;
