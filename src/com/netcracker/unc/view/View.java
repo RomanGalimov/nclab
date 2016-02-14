@@ -1,6 +1,8 @@
 package com.netcracker.unc.view;
 
 import com.netcracker.unc.controller.Controller;
+
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public final class View {
@@ -207,8 +209,7 @@ public final class View {
         }
     }
 
-    /*
-    public static void main(String[] args) throws Exception {
+/*    public static void main(String[] args) throws Exception {
         try{
             Controller.getControl().takeModelFromByteFile();
         } catch (FileNotFoundException fnfe){
@@ -221,8 +222,7 @@ public final class View {
         } catch (FileNotFoundException fnfe){
             System.err.println(fnfe.getMessage());
         }
-    }
-    */
+    }*/
 }
 
 

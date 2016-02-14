@@ -1,14 +1,17 @@
 package com.netcracker.unc.view;
 
-/**
- * Created by BIMO on 06.02.2016.
- */
+
 import java.util.ArrayList;
+import java.util.EventListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
+
 import com.netcracker.unc.controller.Controller;
 import com.netcracker.unc.model.Student;
 
-public class StudentsTable extends AbstractTableModel{
+public class StudentsTable extends AbstractTableModel /*implements TableModelListener*/{
     // Список загловков для колонок в таблице
     private static final String[] headers = {"Факультет", "Группа", "Имя","Дата зачисления"};
 
@@ -17,6 +20,7 @@ public class StudentsTable extends AbstractTableModel{
 
     public StudentsTable(ArrayList<Student> students){
         this.students = students;
+        //this.addTableModelListener(this);
     }
 
     @Override
@@ -51,6 +55,32 @@ public class StudentsTable extends AbstractTableModel{
         }
     }
 
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return true;
+    }
 
 
+
+  /*  public void tableChanged(TableModelEvent e){
+        int row = e.getFirstRow();
+        int col = e.getColumn();
+
+    }*/
+    /*@Override
+    public void setValueAt(Object aValue, int row, int col) {
+        //super.setValueAt(aValue, rowIndex, columnIndex);
+        Student student = students.get(row);
+        switch(col){
+            case 0:
+                *//*return*//* student.getGroup().setFaculty(aValue);
+            case 1:
+                return student.getGroup().getNumberOfGroup();
+            case 2:
+                return student.getNameOfStudent();
+            default:
+                return student.getDateOfEnrollment();
+        }
+
+    }*/
 }

@@ -30,146 +30,181 @@ public class MainFrame extends JFrame implements ActionListener {
 
     private final JTable studentsTable = new JTable();
     private final JTable groupsTable = new JTable();
+    private final JTabbedPane tabbedPane = new JTabbedPane();
 
     private MainFrame(){
-        // Выставляем у таблицы свойство, которое позволяет выделить
-        // ТОЛЬКО одну строку в таблице
         studentsTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         groupsTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
-        // Используем layout manager
         GridBagLayout gb = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
-        // Каждый элемент является последним в строке
         gbc.gridwidth = GridBagConstraints.REMAINDER;
-        // Элемент раздвигается на весь размер ячейки
         gbc.fill = GridBagConstraints.BOTH;
-        // Но имеет границы - слева, сверху и справа по 5. Снизу - 0
         gbc.insets = new Insets(5, 5, 0, 5);
 
-        // Создаем панель для кнопок
         JPanel btnPanel = new JPanel();
-        // усанавливаем у него layout
         btnPanel.setLayout(gb);
-        // Создаем кнопки
-        btnPanel.add(createButton(gb, gbc, "Обновить", LOAD));
+        btnPanel.add(createButton(gb, gbc, "Сохранить", LOAD));
         btnPanel.add(createButton(gb, gbc, "Добавить", ADD));
         btnPanel.add(createButton(gb, gbc, "Исправить", SET));
         btnPanel.add(createButton(gb, gbc, "Удалить", DELETE));
 
-        // Создаем панель для левой колокни с кнопками
         JPanel left = new JPanel();
-        // Выставляем layout BorderLayout
         left.setLayout(new BorderLayout());
-        // Кладем панель с кнопками в верхнюю часть
         left.add(btnPanel, BorderLayout.NORTH);
-        // Кладем панель для левой колонки на форму слева - WEST
         add(left, BorderLayout.WEST);
 
-        final JTabbedPane tabbedPane = new JTabbedPane();
+
         add(tabbedPane, BorderLayout.CENTER);
         tabbedPane.addTab("Студенты",new JScrollPane(studentsTable));
         tabbedPane.addTab("Группы",new JScrollPane(groupsTable));
 
-        // выставляем координаты формы
         setBounds(100, 200, 900, 400);
-        // При закрытии формы заканчиваем работу приложения
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
+        loadStudents();
+        loadGroups();
 
     }
 
-    // Метод создает кнопку с заданными харктеристиками - заголовок и действие
     private JButton createButton(GridBagLayout gb, GridBagConstraints gbc, String title, String action) {
-        // Создаем кнопку с заданным загловком
         JButton button = new JButton(title);
-        // Действие будетп роверяться в обработчике и мы будем знать, какую
-        // именно кнопку нажали
         button.setActionCommand(action);
-        // Обработчиком события от кнопки являемся сама форма
         button.addActionListener(this);
-        // Выставляем свойства для размещения для кнопки
         gb.setConstraints(button, gbc);
         return button;
     }
 
     @Override
-    // Обработка нажатий кнопок
     public void actionPerformed(ActionEvent ae) {
-        // Получаем команду - ActionCommand
         String action = ae.getActionCommand();
-        // В зависимости от команды выполняем действия
         switch (action) {
-            // Загрузка данных
             case LOAD:
-                loadStudents();
-                break;
-            // Добавление записи
-            case ADD:
+                try {
+                    if (tabbedPane.getSelectedIndex() == 0) loadStudents();
+                    else loadGroups();
+                } catch (NullPointerException npe) {
+                    JOptionPane.showMessageDialog(null, npe.getMessage(), "Inane error", JOptionPane.ERROR_MESSAGE);
+                }
+                try {
+                    saveAll();
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Inane error", JOptionPane.ERROR_MESSAGE);
+                }
 
                 break;
-            // Исправление записи
+            case ADD:
+                try {
+                    if (tabbedPane.getSelectedIndex() == 0) addStudent();
+                    else addGroup();
+
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Inane error", JOptionPane.ERROR_MESSAGE);
+                }
+
+                break;
             case SET:
 
                 break;
-            // Удаление записи
             case DELETE:
-
-                break;
-        }
-    }
+                try {
+                    if (tabbedPane.getSelectedIndex() == 0) deleteStudent();
+                    else deleteGroup();
+                } catch (IllegalArgumentException iae) {
+                    JOptionPane.showMessageDialog(null, iae.getMessage(), "Inane error", JOptionPane.ERROR_MESSAGE);
+                    break;
+                }
+        }}
 
     //Дальше описание кнопок
 
-    //Загрузить список студентов
-    private void loadStudents()/* throws Exception */{
-       // try {
+    private void loadStudents(){
+
             ArrayList<Student> students = Controller.getControl().getStudents();
             StudentsTable st = new StudentsTable(students);
             studentsTable.setModel(st);
-       /* }catch (NullPointerException npe){
-            System.err.println(npe.getMessage());
-        }*/
+
     }
 
-    //Загрузить список групп
-    private void loadGroups() throws Exception{
-        try{
+    private void loadGroups() {
             ArrayList<Group> groups = Controller.getControl().getGroups();
             GroupsTable gt = new GroupsTable(groups);
             groupsTable.setModel(gt);
-        }catch (NullPointerException npe){
-            System.err.println(npe.getMessage());
-        }
+
     }
 
-    //Добавить студента
+    private void addStudent() throws Exception {
+        EditStudentFrame esf = new EditStudentFrame();
+        if (esf.isSave()){
+            esf.createStudent();
+        }
+        loadStudents();
+    }
 
-    //Добавить группу
+    private void addGroup() throws Exception{
+        EditGroupFrame egf = new EditGroupFrame();
+        if (egf.isSave()){
+            egf.createGroup();
+        }
+        loadGroups();
+    }
 
-    //Редактировать студента
+    private void setStudent(){
+
+    }
 
     //Редактировать группу
 
-    //Удалить студента
 
-    //Удалить группу
+    private void deleteStudent(){
+        int sr = studentsTable.getSelectedRow();
+        if (sr!=-1){
+            String name = studentsTable.getModel().getValueAt(sr,2).toString();
+            Controller.getControl().deleteStudentByName(name);
+            loadStudents();
+        } else {
+        JOptionPane.showMessageDialog(this, "Вы должны выделить строку для удаления");
+    }
+
+    }
+
+    private void deleteGroup(){
+        int sr = groupsTable.getSelectedRow();
+        if (sr!=-1){
+            int numberOfGroup = Integer.parseInt(groupsTable.getModel().getValueAt(sr,1).toString());
+            String faculty = groupsTable.getModel().getValueAt(sr,0).toString();
+            Controller.getControl().deleteGroup(numberOfGroup,faculty);
+            loadGroups();
+        } else {
+        JOptionPane.showMessageDialog(this, "Вы должны выделить строку для удаления");
+    }
+    }
+
+    private void saveAll() throws Exception {
+        try{
+            Controller.getControl().saveAllInByteFile();
+        } catch (FileNotFoundException fnfe){
+            JOptionPane.showMessageDialog(null,"Файл отсутствует","Inane error",JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
 
 
 
     public static void main(String[] args) throws Exception{
-        //загружаем данные
         try{
             Controller.getControl().takeModelFromByteFile();
+            //JOptionPane.showMessageDialog(null,"Файл отсутствует","Inane error",JOptionPane.ERROR_MESSAGE);
         } catch (FileNotFoundException fnfe){
-            System.err.println(fnfe.getMessage());
+            JOptionPane.showMessageDialog(null,"Файл отсутствует","Inane error",JOptionPane.ERROR_MESSAGE);
         }
         MainFrame cf = new MainFrame();
         cf.setVisible(true);
         try{
             Controller.getControl().saveAllInByteFile();
         } catch (FileNotFoundException fnfe){
-            System.err.println(fnfe.getMessage());
+            JOptionPane.showMessageDialog(null,"Файл отсутствует","Inane error",JOptionPane.ERROR_MESSAGE);
         }
     }
 }

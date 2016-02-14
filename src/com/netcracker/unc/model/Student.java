@@ -13,6 +13,7 @@ public class Student implements Serializable{
         this.dateOfEnrollment=dateOfEnrollment;
     }
 
+
     public String getNameOfStudent() {
         return nameOfStudent;
     }
