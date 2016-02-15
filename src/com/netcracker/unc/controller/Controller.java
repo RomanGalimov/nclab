@@ -165,14 +165,14 @@ public final class Controller implements RemoteController {
 
     /*~~~*/
 
-    public ArrayList<Student> getStudents(){
+    public synchronized ArrayList<Student> getStudents(){
         if(Model.getModel().getStudents()==null){
             throw new NullPointerException();
         }
         return Model.getModel().getStudents();
     }
 
-    public ArrayList<Group> getGroups(){
+    public synchronized ArrayList<Group> getGroups(){
         if(Model.getModel().getGroups()==null){
             throw new NullPointerException();
         }

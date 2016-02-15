@@ -9,14 +9,19 @@ import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import com.netcracker.unc.controller.Controller;
 import com.netcracker.unc.model.Group;
+import com.netcracker.unc.rmi.Client;
 
 public class GroupsTable extends AbstractTableModel{
     private static final String[] headers = {"Факультет", "Группа"};
 
-    ArrayList<Group> groups = Controller.getControl().getGroups();
+    ArrayList<Group> groups;
 
     public GroupsTable (ArrayList<Group> groups){
         this.groups = groups;
+    }
+
+    public GroupsTable() throws  Exception{
+        this.groups= Client.control().getGroups();
     }
 
     @Override
@@ -55,17 +60,17 @@ public class GroupsTable extends AbstractTableModel{
             case 0:
                 try {
                     String faculty = new String((aValue.toString()));
-                    Controller.getControl().modifyGroup(group.getNumberOfGroup(),group.getFaculty(),group.getNumberOfGroup(),faculty);
+                    Client.control().modifyGroup(group.getNumberOfGroup(),group.getFaculty(),group.getNumberOfGroup(),faculty);
 
-                } catch (IllegalArgumentException iae){
+                } catch (Exception iae){
                     JOptionPane.showMessageDialog(null, iae.getMessage(), "Inane error", JOptionPane.ERROR_MESSAGE);
                 }
             default:
                 try {
                     int number = new Integer(aValue.toString()).intValue();
-                    Controller.getControl().modifyGroup(group.getNumberOfGroup(),group.getFaculty(),number,group.getFaculty());
+                    Client.control().modifyGroup(group.getNumberOfGroup(),group.getFaculty(),number,group.getFaculty());
 
-                } catch (IllegalArgumentException iae){
+                } catch (Exception iae){
                     JOptionPane.showMessageDialog(null, iae.getMessage(), "Inane error", JOptionPane.ERROR_MESSAGE);
                 }
 

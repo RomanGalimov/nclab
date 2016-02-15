@@ -1,25 +1,24 @@
 package com.netcracker.unc.view;
 
+import com.netcracker.unc.controller.Controller;
+import com.netcracker.unc.model.Group;
+import com.netcracker.unc.model.Student;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+
 /**
  * Created by BIMO on 06.02.2016.
  */
 
-import com.netcracker.unc.controller.Controller;
-import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
 //import java.util.List;
-import javax.swing.*;
 
-import java.util.ArrayList;
-import com.netcracker.unc.model.Student;
-import com.netcracker.unc.model.Group;
 
-public class MainFrame extends JFrame implements ActionListener {
+/*public class MainFrame extends JFrame implements ActionListener {
 
 
     private static final String LOAD = "LOAD";
@@ -194,4 +193,4 @@ public class MainFrame extends JFrame implements ActionListener {
         }
     }
 }
-
+*/

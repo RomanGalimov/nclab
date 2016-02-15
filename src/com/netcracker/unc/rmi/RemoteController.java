@@ -1,5 +1,6 @@
 package com.netcracker.unc.rmi;
 
+import com.netcracker.unc.model.Group;
 import com.netcracker.unc.model.Student;
 
 import java.rmi.*;
@@ -34,4 +35,8 @@ public interface RemoteController extends Remote {
     String getStudentsOfGroup(int numberOfGroup,String faculty) throws Exception;
 
     ArrayList<Student> getSortedListOfStudents() throws Exception;
+
+    ArrayList<Student> getStudents() throws Exception;
+
+    ArrayList<Group> getGroups() throws Exception;
 }

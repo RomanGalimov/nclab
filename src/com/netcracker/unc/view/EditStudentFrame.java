@@ -7,6 +7,7 @@ import javax.swing.*;
 
 import com.netcracker.unc.model.Student;
 import com.netcracker.unc.controller.Controller;
+import com.netcracker.unc.rmi.Client;
 
 public class EditStudentFrame extends JDialog implements ActionListener{
 
@@ -109,10 +110,10 @@ public class EditStudentFrame extends JDialog implements ActionListener{
         return save;
     }
 
-    public void createStudent() throws Exception {
+    public void createStudent()  {
         try {
-            Controller.getControl().createStudent(txtName.getText(), Integer.parseInt(txtNOG.getText()), txtFaculty.getText(), txtDOE.getText());
-        } catch (IllegalArgumentException iae){
+            Client.control().createStudent(txtName.getText(), Integer.parseInt(txtNOG.getText()), txtFaculty.getText(), txtDOE.getText());
+        } catch (Exception iae){
             JOptionPane.showMessageDialog(null,iae.getMessage(),"Inane error",JOptionPane.ERROR_MESSAGE);
         }
     }
