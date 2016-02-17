@@ -3,6 +3,7 @@ package com.netcracker.unc.view;
 import com.netcracker.unc.controller.Controller;
 import com.netcracker.unc.model.Group;
 import com.netcracker.unc.model.Student;
+import com.netcracker.unc.rmi.RemoteController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 //import java.util.List;
 
 
-/*public class MainFrame extends JFrame implements ActionListener {
+public class MainFrame extends JFrame implements ActionListener {
 
 
     private static final String LOAD = "LOAD";
@@ -31,7 +32,14 @@ import java.util.ArrayList;
     private final JTable groupsTable = new JTable();
     private final JTabbedPane tabbedPane = new JTabbedPane();
 
-    private MainFrame(){
+    private RemoteController control;
+
+    public RemoteController getControl(){
+        return control;
+    }
+
+    public MainFrame(RemoteController control) throws Exception{
+        this.control=control;
         studentsTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         groupsTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
@@ -104,23 +112,23 @@ import java.util.ArrayList;
                 try {
                     if (tabbedPane.getSelectedIndex() == 0) deleteStudent();
                     else deleteGroup();
-                } catch (IllegalArgumentException iae) {
+                } catch (Exception iae) {
                     JOptionPane.showMessageDialog(null, iae.getMessage(), "Inane error", JOptionPane.ERROR_MESSAGE);
                     break;
                 }
         }}
 
 
-    private void loadStudents(){
+    private void loadStudents() throws Exception{
 
-            ArrayList<Student> students = Controller.getControl().getStudents();
+            ArrayList<Student> students = control.getStudents();
             StudentsTable st = new StudentsTable(students);
             studentsTable.setModel(st);
 
     }
 
-    private void loadGroups() {
-            ArrayList<Group> groups = Controller.getControl().getGroups();
+    private void loadGroups() throws Exception {
+            ArrayList<Group> groups = control.getGroups();
             GroupsTable gt = new GroupsTable(groups);
             groupsTable.setModel(gt);
 
@@ -129,7 +137,7 @@ import java.util.ArrayList;
     private void addStudent() throws Exception {
         EditStudentFrame esf = new EditStudentFrame();
         if (esf.isSave()){
-            esf.createStudent();
+            esf.createStudent(control);
         }
         loadStudents();
     }
@@ -137,16 +145,16 @@ import java.util.ArrayList;
     private void addGroup() throws Exception{
         EditGroupFrame egf = new EditGroupFrame();
         if (egf.isSave()){
-            egf.createGroup();
+            egf.createGroup(control);
         }
         loadGroups();
     }
 
-    private void deleteStudent(){
+    private void deleteStudent() throws Exception{
         int sr = studentsTable.getSelectedRow();
         if (sr!=-1){
             String name = studentsTable.getModel().getValueAt(sr,2).toString();
-            Controller.getControl().deleteStudentByName(name);
+            control.deleteStudentByName(name);
             loadStudents();
         } else {
         JOptionPane.showMessageDialog(this, "Вы должны выделить строку для удаления");
@@ -154,12 +162,12 @@ import java.util.ArrayList;
 
     }
 
-    private void deleteGroup(){
+    private void deleteGroup() throws Exception{
         int sr = groupsTable.getSelectedRow();
         if (sr!=-1){
             int numberOfGroup = Integer.parseInt(groupsTable.getModel().getValueAt(sr,1).toString());
             String faculty = groupsTable.getModel().getValueAt(sr,0).toString();
-            Controller.getControl().deleteGroup(numberOfGroup,faculty);
+            control.deleteGroup(numberOfGroup,faculty);
             loadGroups();
         } else {
         JOptionPane.showMessageDialog(this, "Вы должны выделить строку для удаления");
@@ -168,7 +176,7 @@ import java.util.ArrayList;
 
     private void saveAll() throws Exception {
         try{
-            Controller.getControl().saveAllInByteFile();
+            control.saveAllInByteFile();
         } catch (FileNotFoundException fnfe){
             JOptionPane.showMessageDialog(null,"Файл отсутствует","Inane error",JOptionPane.ERROR_MESSAGE);
         }
@@ -177,7 +185,7 @@ import java.util.ArrayList;
 
 
 
-    public static void main(String[] args) throws Exception{
+ /*   public static void main(String[] args) throws Exception{
         try{
             Controller.getControl().takeModelFromByteFile();
             //JOptionPane.showMessageDialog(null,"Файл отсутствует","Inane error",JOptionPane.ERROR_MESSAGE);
@@ -191,6 +199,6 @@ import java.util.ArrayList;
         } catch (FileNotFoundException fnfe){
             JOptionPane.showMessageDialog(null,"Файл отсутствует","Inane error",JOptionPane.ERROR_MESSAGE);
         }
-    }
+    }*/
 }
-*/
+

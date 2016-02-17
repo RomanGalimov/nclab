@@ -8,6 +8,7 @@ import javax.swing.*;
 import com.netcracker.unc.model.Student;
 import com.netcracker.unc.controller.Controller;
 import com.netcracker.unc.rmi.Client;
+import com.netcracker.unc.rmi.RemoteController;
 
 public class EditStudentFrame extends JDialog implements ActionListener{
 
@@ -110,9 +111,9 @@ public class EditStudentFrame extends JDialog implements ActionListener{
         return save;
     }
 
-    public void createStudent()  {
+    public void createStudent(RemoteController control)  {
         try {
-            Client.control().createStudent(txtName.getText(), Integer.parseInt(txtNOG.getText()), txtFaculty.getText(), txtDOE.getText());
+            control.createStudent(txtName.getText(), Integer.parseInt(txtNOG.getText()), txtFaculty.getText(), txtDOE.getText());
         } catch (Exception iae){
             JOptionPane.showMessageDialog(null,iae.getMessage(),"Inane error",JOptionPane.ERROR_MESSAGE);
         }
