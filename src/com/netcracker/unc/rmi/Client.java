@@ -8,7 +8,6 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
 
-import com.netcracker.unc.controller.Controller;
 import com.netcracker.unc.model.Group;
 import com.netcracker.unc.model.Student;
 import com.netcracker.unc.view.*;

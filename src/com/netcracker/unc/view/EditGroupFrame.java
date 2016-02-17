@@ -7,6 +7,7 @@ import javax.swing.*;
 
 import com.netcracker.unc.model.Group;
 import com.netcracker.unc.controller.Controller;
+import com.netcracker.unc.rmi.Client;
 
 public class EditGroupFrame  extends JDialog implements ActionListener{
 
@@ -24,7 +25,7 @@ public class EditGroupFrame  extends JDialog implements ActionListener{
 
     private boolean save = false;
 
-    EditGroupFrame(){
+    public  EditGroupFrame(){
         this(null);
     }
 
@@ -90,10 +91,10 @@ public class EditGroupFrame  extends JDialog implements ActionListener{
         return save;
     }
 
-    public void createGroup() throws Exception{
+    public void createGroup() {
         try {
-            Controller.getControl().createGroup(Integer.parseInt(txtNOG.getText()), txtFaculty.getText());
-        } catch (IllegalArgumentException iae){
+            Client.control().createGroup(Integer.parseInt(txtNOG.getText()), txtFaculty.getText());
+        } catch (Exception iae){
             JOptionPane.showMessageDialog(null,iae.getMessage(),"Inane error",JOptionPane.ERROR_MESSAGE);
         }
     }
