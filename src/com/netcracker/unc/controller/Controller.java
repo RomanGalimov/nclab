@@ -39,9 +39,11 @@ public final class Controller implements RemoteController {
     }
 
     public synchronized void takeModelFromByteFile() throws Exception {
-        if (!new File("model").exists())
-            throw new FileNotFoundException("File not found");
-        Model.getModel().takeModelFromByteFile();
+        if (new File("model").exists())
+            Model.getModel().takeModelFromByteFile();
+        else
+            saveAllInByteFile();
+
     }
 
     public synchronized String getAllStudents(){
