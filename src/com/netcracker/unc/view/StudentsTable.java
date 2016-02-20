@@ -20,6 +20,7 @@ public class StudentsTable extends AbstractTableModel /*implements TableModelLis
 
     // Здесь мы храним список контактов, которые будем отображать в таблице
     ArrayList<Student> students;
+    private RemoteController control;
 
     public StudentsTable(ArrayList<Student> students){
         this.students = students;
@@ -28,6 +29,7 @@ public class StudentsTable extends AbstractTableModel /*implements TableModelLis
 
     public StudentsTable(RemoteController control)throws Exception{
         this.students = control.getStudents();
+        this.control=control;
     }
 
     @Override
@@ -70,41 +72,45 @@ public class StudentsTable extends AbstractTableModel /*implements TableModelLis
 
 
 
-    public void setValueAt(Object aValue, int row, int col, RemoteController control) {
+    public void setValueAt(Object aValue, int row, int col/*, RemoteController control*/) {
         Student student = students.get(row);
         switch(col){
             case 0:
                 try {
                     String faculty = new String((aValue.toString()));
                     control.modifyStudentByName(student.getNameOfStudent(),student.getNameOfStudent(),student.getDateOfEnrollment(),student.getGroup().getNumberOfGroup() ,faculty );
-
+                    control.getStudents();
                 } catch (Exception iae){
                     JOptionPane.showMessageDialog(null, iae.getMessage(), "Inane error", JOptionPane.ERROR_MESSAGE);
                 }
+                break;
             case 1:
                 try {
                     int number = new Integer(aValue.toString()).intValue();
                     control.modifyStudentByName(student.getNameOfStudent(),student.getNameOfStudent(),student.getDateOfEnrollment(),number  ,student.getGroup().getFaculty() );
-
+                    control.getStudents();
                 } catch (Exception iae){
                     JOptionPane.showMessageDialog(null, iae.getMessage(), "Inane error", JOptionPane.ERROR_MESSAGE);
                 }
+                break;
             case 2:
                 try {
                     String name = new String((aValue.toString()));
                     control.modifyStudentByName(student.getNameOfStudent(),name,student.getDateOfEnrollment(),student.getGroup().getNumberOfGroup(),student.getGroup().getFaculty() );
-
+                    control.getStudents();
                 } catch (Exception iae){
                     JOptionPane.showMessageDialog(null, iae.getMessage(), "Inane error", JOptionPane.ERROR_MESSAGE);
                 }
+                break;
             default:
                 try {
                     String date = new String((aValue.toString()));
                     control.modifyStudentByName(student.getNameOfStudent(),student.getNameOfStudent(),date,student.getGroup().getNumberOfGroup(),student.getGroup().getFaculty() );
-
+                    control.getStudents();
                 } catch (Exception iae){
                     JOptionPane.showMessageDialog(null, iae.getMessage(), "Inane error", JOptionPane.ERROR_MESSAGE);
                 }
+                break;
         }
 
     }

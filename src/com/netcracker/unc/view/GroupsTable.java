@@ -16,6 +16,7 @@ public class GroupsTable extends AbstractTableModel{
     private static final String[] headers = {"Факультет", "Группа"};
 
     ArrayList<Group> groups;
+    private RemoteController control;
 
     public GroupsTable (ArrayList<Group> groups){
         this.groups = groups;
@@ -23,6 +24,7 @@ public class GroupsTable extends AbstractTableModel{
 
     public GroupsTable(RemoteController control) throws  Exception{
         this.groups= control.getGroups();
+        this.control=control;
     }
 
     @Override
@@ -55,25 +57,27 @@ public class GroupsTable extends AbstractTableModel{
         return true;
     }
 
-    public void setValueAt(Object aValue, int row, int col,RemoteController control) {
+    public void setValueAt(Object aValue, int row, int col/*,RemoteController control*/) {
         Group group = groups.get(row);
         switch (col){
             case 0:
                 try {
                     String faculty = new String((aValue.toString()));
                     control.modifyGroup(group.getNumberOfGroup(),group.getFaculty(),group.getNumberOfGroup(),faculty);
-
+                    control.getGroups();
                 } catch (Exception iae){
                     JOptionPane.showMessageDialog(null, iae.getMessage(), "Inane error", JOptionPane.ERROR_MESSAGE);
                 }
+                break;
             default:
                 try {
                     int number = new Integer(aValue.toString()).intValue();
                     control.modifyGroup(group.getNumberOfGroup(),group.getFaculty(),number,group.getFaculty());
-
+                    control.getGroups();
                 } catch (Exception iae){
                     JOptionPane.showMessageDialog(null, iae.getMessage(), "Inane error", JOptionPane.ERROR_MESSAGE);
                 }
+                break;
 
         }
     }
