@@ -122,14 +122,14 @@ public class MainFrame extends JFrame implements ActionListener {
     private void loadStudents() throws Exception{
 
             ArrayList<Student> students = control.getStudents();
-            StudentsTable st = new StudentsTable(students);
+            StudentsTable st = new StudentsTable(students, control);
             studentsTable.setModel(st);
 
     }
 
     private void loadGroups() throws Exception {
             ArrayList<Group> groups = control.getGroups();
-            GroupsTable gt = new GroupsTable(groups);
+            GroupsTable gt = new GroupsTable(groups, control);
             groupsTable.setModel(gt);
 
     }

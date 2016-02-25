@@ -18,8 +18,9 @@ public class GroupsTable extends AbstractTableModel{
     ArrayList<Group> groups;
     private RemoteController control;
 
-    public GroupsTable (ArrayList<Group> groups){
+    public GroupsTable (ArrayList<Group> groups, RemoteController control){
         this.groups = groups;
+        this.control=control;
     }
 
     public GroupsTable(RemoteController control) throws  Exception{

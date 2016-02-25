@@ -22,8 +22,9 @@ public class StudentsTable extends AbstractTableModel /*implements TableModelLis
     ArrayList<Student> students;
     private RemoteController control;
 
-    public StudentsTable(ArrayList<Student> students){
+    public StudentsTable(ArrayList<Student> students, RemoteController control){
         this.students = students;
+        this.control=control;
         //this.addTableModelListener(this);
     }
 
